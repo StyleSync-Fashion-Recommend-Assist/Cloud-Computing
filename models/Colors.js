@@ -1,5 +1,5 @@
-function createColoursDb (sequelize, DataTypes) {
-    const colours = sequelize.define('Colours', {
+function createColorsDb (sequelize, DataTypes) {
+    const colours = sequelize.define('Colors', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -11,10 +11,10 @@ function createColoursDb (sequelize, DataTypes) {
         }
     }, 
     {
-        tableName: "Colours",
+        tableName: "Colors",
     });
 
     return colours;
 }
 
-module.exports = createColoursDb;
+module.exports = createColorsDb;

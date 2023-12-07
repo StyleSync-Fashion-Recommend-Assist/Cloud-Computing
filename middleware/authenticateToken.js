@@ -11,7 +11,7 @@ function authenticationToken(req, res, next) {
       next(new Error("Token is required"));
   }
 
-  const decoded = jwt.verify(token, process.env.accessTokenSecretKey);
+  const decoded = jwt.verify(token, process.env.TokenSecretKey);
   const user = {
       uuid: decoded.uuid,
   }

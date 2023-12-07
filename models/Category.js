@@ -1,5 +1,5 @@
-function createCategoryDb (sequelize, DataTypes) {
-    const Categories = sequelize.define('Kategori', {
+function createCategoriesDb (sequelize, DataTypes) {
+    const Categories = sequelize.define('Categories', {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
@@ -17,4 +17,4 @@ function createCategoryDb (sequelize, DataTypes) {
       return Categories;
 }
 
-module.exports = createCategoryDb;
+module.exports = createCategoriesDb;

@@ -40,7 +40,7 @@ function createClosetDb (sequelize, DataTypes){
         occupationId: {
           type: DataTypes.INTEGER,
           references: {
-            model: 'Occupations',
+            model: 'Occupation',
             key: 'id',
           },
         },

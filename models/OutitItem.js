@@ -8,7 +8,7 @@ function createOutfitItemDb (sequelize, DataTypes) {
         outfitId: {
           type: DataTypes.INTEGER,
           references: {
-            model: 'Outfits',
+            model: 'Outfit',
             key: 'id',
           },
           allowNull: false,

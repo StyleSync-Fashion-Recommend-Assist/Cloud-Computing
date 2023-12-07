@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+require('dotenv').config('./env');
 
 function generateAccsToken(payload) {
-    return jwt.sign(payload, procces.env.JWT_SECRET, {
+    return jwt.sign(payload, process.env.TokenSecretKey, {
         expiresIn: "3m",
     });
 }

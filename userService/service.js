@@ -27,7 +27,7 @@ const service = {
         return accessToken;
     }, 
 
-    registerUser: async (name,  email, password) => {
+    registerUser: async (name, email, password) => {
         console.log(password);
         const hashPw = await bcrypt.hash(password, 10);
         const [user, created] = await User.findOrCreate({
@@ -174,7 +174,7 @@ const service = {
           }
         });
     
-        const resOtp = await ResetPassword.destroy({
+        const resOtp = await ResPassword.destroy({
           where: {
             otp,
             id_user: user.id
