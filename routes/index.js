@@ -9,7 +9,7 @@ const { handlerRegisterUser,
     handlerGetDetailProfile,
     handlerUpdateProfile
 } = require('../handler/app/User/handler');
-const {authenticateToken} = require('../middleware/authenticateToken');
+const authenticateToken = require('../middleware/authenticateToken');
 
 const router = express.Router();
 
@@ -30,3 +30,5 @@ router.get('/user/profile', authenticateToken, handlerGetDetailProfile);
 
 // Update Profile
 router.put('/user/update', authenticateToken, handlerUpdateProfile);
+
+module.exports = router;

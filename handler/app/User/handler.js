@@ -8,7 +8,7 @@ const {
     validateChangePasswordSchema,
     validateResetPasswordSchema
 } = require('../../../validasiUser');
-const userService = require('../../../userService');
+const userService = require('../../../userService/service');
 const CryptoJS = require('crypto-js');
 const AES = require('crypto-js/aes');
 
