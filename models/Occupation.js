@@ -1,20 +1,21 @@
 function createOcuppationDb (sequelize, DataTypes) {
-    const Occupation = sequelize.define('Occupation', {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        occupationName: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
+  const Occupation = sequelize.define('Occupation', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
-      {
-        tableName: "Occupation"
-      });
+      occupationName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "Occupation"
+    });
 
-      return Occupation;
+    return Occupation;
 }
 
 module.exports = createOcuppationDb;
