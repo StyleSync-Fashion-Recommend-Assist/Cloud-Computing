@@ -25,11 +25,13 @@ const AES = require('crypto-js/aes');
 const handlerRegisterUser = async (req, res, next) => {
     try {
         const {name, email, password} = req.body;
-        validateRegisterSchema({name, email, password});
+        validateRegisterSchema({ name, email, password });
         const user = await userService.registerUser(name, email, password);
+        console.log(user);
         res.status(201).json({
+            status: "Success",
             message: "User berhasil Register",
-            accesToken: user // user_id, token, nama, email, hashPassword
+            
         });
     } catch (error) {
         next(error);
@@ -40,10 +42,10 @@ const handlerLoginUser = async (req, res, next) => {
     try {
         const {email, password} = req.body;
         validateLoginSchema({email, password});
-        const user = userService.userLogin(email, password);
+        const token = await userService.userLogin(email, password);
         res.status(200).json({
             message: "User berhasil Login",
-            data: user // User Token atau session
+            AccessToken: token // User Token atau session
         });
     } catch (error) {
         next(error);
@@ -52,8 +54,8 @@ const handlerLoginUser = async (req, res, next) => {
 
 const handlerLogoutUser = async (req, res, next) => {
     try{
-        const uuid = req.user.uuid;
-        const user = await userService.userLogOut(uuid);
+        const {id} = req.params;
+        const user = await userService.userLogOut(id);
         res.status(200).json({
             status: "Success",
             message: "Logout Berhasil",
@@ -113,7 +115,7 @@ const handlerVerifyResetPasswordOTP = async (req,res,next) => {
     }
 };
 
-const  handlerGenerateNewResetPassword = async (req,res,next) => {
+const handlerGenerateNewResetPassword = async (req,res,next) => {
     try {
         const {encryptKey, password, confirmPassword} = req.body;
 

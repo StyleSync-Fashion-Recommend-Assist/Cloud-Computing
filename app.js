@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger('dev'));
 
-app.use("/", v1);
+app.use("/api", v1);
 
 app.use(handler404);
 app.use(errorHandler);

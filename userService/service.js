@@ -1,7 +1,7 @@
 const {User, ResPassword} = require('../models');
-const {generateAccsToken} = require('../utils/generateAccsToken');
-const {generateOTP} = require('../utils/generateOTP');
-const {sendMail} = require('../utils/sendMail');
+const generateAccsToken = require('../utils/generateAccsToken');
+const generateOTP = require('../utils/generateOTP');
+const sendMail = require('../utils/sendMail');
 const bcrypt = require("bcrypt");
 
 
@@ -52,11 +52,11 @@ const service = {
         };
     },
 
-    userLogOut: async (uuid) => {
+    userLogOut: async (id) => {
         // Cari user berdasarkan UUID 
         const user = await User.findOne({
             where: {
-                uuid: uuid,
+                id: id,
             }
         })
         if (!user){
