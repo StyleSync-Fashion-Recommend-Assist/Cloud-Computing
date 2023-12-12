@@ -110,9 +110,6 @@ const handlerChangeFavorite = async (req, res) => {
         res.status(200).json({
             status: "Success",
             message: "Change Favorite Success",
-            data: {
-                Outfit: outfit,
-            }
         });
     } catch (error) {
         console.error('Error occured', error);
