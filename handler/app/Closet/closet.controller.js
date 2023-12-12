@@ -1,6 +1,7 @@
-const { Outfit, Closet, Kategori, SubKategori, OutfitItem } = require('../../../models');
+const { User, Outfit, Closet, Kategori, SubKategori, OutfitItem, Occupation } = require('../../../models');
 
 // Masih belum yakin sih gw
+/* CLOSET */
 const handlerAddItems = async (req, res, next) => { 
     try {
         const {userId, kategoriId, subKategoriId, warnaId, occupationId, 
@@ -77,4 +78,40 @@ const handlerGetItemById = async (req, res, next) => {
     } catch (error){
         next(error);
     }
-}
+};
+
+/* OUTFIT */
+const handlerGetOutfit = async (req, res) => {
+    try{
+        const {userId} = req.params;
+        // Cek data berdasarkan userId dari tabel Outfit
+        const outfits = await Outfit.findAll({
+            where: {userId},
+            include: [
+                {model: User, attributes: [
+                    'name', 'email', 'gender'
+                ]},
+                {model: Occupation, attributes: [
+                    'occupationName'
+                ]}
+            ],
+        });
+
+        // Kirim response ke server
+        res.status(200).json({
+            status: 'Success',
+            message: "Berhasil mengambil semua outfit",
+            data: {
+                Outfit: outfits,
+            },
+        })
+    } catch (error){
+        console.error('Error occured', error);
+        res.status(500).json({
+            status: 'Failed',
+            message: error.message,
+            data: null,
+        });
+    }
+};
+
