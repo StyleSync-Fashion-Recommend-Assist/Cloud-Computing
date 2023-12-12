@@ -176,7 +176,14 @@ const handlerDeleteOutfit = async (req, res) => {
     }
 };
 
-
+module.exports = {
+    handlerGetOutfitById,
+    handlerGetOutfitByOccupation,
+    handlerAddOutfit,
+    handlerChangeFavorite,
+    handlerUpdateOutfit,
+    handlerDeleteOutfit
+}
 
 
 
