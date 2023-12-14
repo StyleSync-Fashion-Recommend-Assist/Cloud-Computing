@@ -72,7 +72,6 @@ const service = {
         return user;
     },
 
-    // Tanyain ke rizki mulai dari sini
     changePassword: async (uuid, oldPassword, newPassword) => {
         // Cari user berdasarkan id
         const user = await User.findOne({
