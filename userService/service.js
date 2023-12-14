@@ -1,3 +1,4 @@
+const { token } = require('morgan');
 const {User, ResPassword} = require('../models');
 const generateAccsToken = require('../utils/generateAccsToken');
 const generateOTP = require('../utils/generateOTP');
@@ -23,12 +24,14 @@ const service = {
         }
 
         // generate access token
-        const accessToken = generateAccsToken({uuid: login.uuid});
+        const accessToken = generateAccsToken({uuid: login.uuid}, "24h");
+        await login.update({token: accessToken});
+        await login.save();
         return accessToken;
     }, 
 
     registerUser: async (name, email, password) => {
-        console.log(password);
+        console.log(name,email,password);
         const hashPw = await bcrypt.hash(password, 10);
         const [user, created] = await User.findOrCreate({
             where: {email: email},
@@ -52,11 +55,11 @@ const service = {
         };
     },
 
-    userLogOut: async (id) => {
+    userLogOut: async (uuid) => {
         // Cari user berdasarkan UUID 
         const user = await User.findOne({
             where: {
-                id: id,
+                uuid: uuid
             }
         })
         if (!user){
@@ -65,9 +68,11 @@ const service = {
 
         // Logout User dengan Menghapus token atau session
         await user.update({token: null});
+        await user.save();
         return user;
     },
 
+    // Tanyain ke rizki mulai dari sini
     changePassword: async (uuid, oldPassword, newPassword) => {
         // Cari user berdasarkan id
         const user = await User.findOne({
@@ -188,6 +193,7 @@ const service = {
         return true;
     },
 
+    
     getDetailProfile: async (uuid) => {
         const user = await User.findOne({
             where: {

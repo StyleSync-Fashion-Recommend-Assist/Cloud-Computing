@@ -25,6 +25,7 @@ const AES = require('crypto-js/aes');
 const handlerRegisterUser = async (req, res, next) => {
     try {
         const {name, email, password} = req.body;
+        console.log(req);
         validateRegisterSchema({ name, email, password });
         const user = await userService.registerUser(name, email, password);
         console.log(user);
@@ -54,13 +55,13 @@ const handlerLoginUser = async (req, res, next) => {
 
 const handlerLogoutUser = async (req, res, next) => {
     try{
-        const {id} = req.params;
-        const user = await userService.userLogOut(id);
+        const uuid = req.user.uuid;
+        await userService.userLogOut(uuid);
         res.status(200).json({
             status: "Success",
             message: "Logout Berhasil",
         });
-    } catch (errorr){
+    } catch (error){
         next(error);
     }
 }; 

@@ -13,6 +13,10 @@ function createOutfitItemDb (sequelize, DataTypes) {
         },
         allowNull: false,
       },
+      namaItem: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       tableName: "OutfitItem",

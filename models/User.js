@@ -7,11 +7,15 @@ function createUserDb (sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
       },
-      uuid: { // Token digunakan sebagai unique value untuk user, jika ingin logout token ini akan dihapus dari database
+      uuid: {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV4,
           allowNull: false,
           unique: true,
+      },
+      token: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       name: {
           type: DataTypes.STRING,
