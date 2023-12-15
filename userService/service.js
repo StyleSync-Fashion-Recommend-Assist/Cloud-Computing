@@ -114,13 +114,14 @@ const service = {
         
         const otp = generateOTP();
         const resetOTP = await ResPassword.create({
+            userId: user.id,
+            email: email,
             otp,
-            id_users: user.id,
         });
 
         await sendMail({
             to: email,
-            OTP: otp,
+            otp: otp,
         });
 
         return resetOTP; // Data dari databse ResPassword

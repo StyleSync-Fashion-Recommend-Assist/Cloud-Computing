@@ -24,7 +24,7 @@ const sendMail = async (data) => {
             >
                 <h2>Hello!</h2>
                 <p style="margin-bottom: 30px;">Your OTP (One-Time Password) for account verification is</p>
-                <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${data.OTP}</h1>               
+                <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${data.otp}</h1>               
             </div>
             `,
           });

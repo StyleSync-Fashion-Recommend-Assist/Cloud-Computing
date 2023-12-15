@@ -84,10 +84,10 @@ const handlerChangePassword = async (req, res, next) => {
 const handlerResetPasswordOTP = async (req, res, next) => {
     try{
         const {email} = req.body;
-        const user = await userService.generatePassOTP(email);
+        await userService.generatePassOTP(email);
         res.status(200).json({
             status: "Success",
-            message: "The OTP message was successfully sent to email"
+            message: "The OTP message was successfully sent to user email"
         });
     } catch (error){
         next(error);

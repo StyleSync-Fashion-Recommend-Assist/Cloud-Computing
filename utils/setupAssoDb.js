@@ -9,9 +9,21 @@ function createAssociation(sequelize) {
     OutfitItem,
     SubKategori,
     User,
+    ResPassword,
     Warna
   } = sequelize.models;
 
+  // User with Reset Password
+  User.hasMany(ResPassword,{
+    foreignKey: "userId",
+    sourceKey: "id"
+  });
+
+  ResPassword.belongsTo(User, {
+    foreignKey: "userId",
+    targetKey: "id"
+  });
+  
   // Users With MarketPlaceFindings
   User.hasMany(MarketPlaceFindings, {
     foreignKey: "userId",
