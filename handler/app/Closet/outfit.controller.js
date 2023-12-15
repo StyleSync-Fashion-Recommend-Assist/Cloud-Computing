@@ -1,4 +1,48 @@
-const { Outfit, User, Occupation } = require('../../../models');
+const { Outfit, User, Occupation, OutfitItem } = require('../../../models');
+
+
+/* GET METHODS */
+const handlerGetAllOutfits = async (req, res) => {
+    try{ 
+        const {userId} = req.params;
+        // Cek apakah userId ini ada atau gak di tabel User:
+        const user = await User.findByPk(userId, {
+            attributes: ["name", "email", "gender"],
+        });
+
+        if (!user){
+            res.status(404).json({
+                status: "Failed",
+                message: "User not found",
+                data: null,
+            });
+        }
+
+        // Bila valid, ambil data outfit
+        const outfit = await Outfit.findOne({
+            where: {userId: userId}
+        });
+
+        res.status(200).json({
+            status: "Success",
+            message: "Berhasil ngambil semua data outfit",
+            data: {
+                name: user.name,
+                email: user.email,
+                gender: user.gender,
+                outfit,
+            }
+        });
+    } catch (error){
+        console.error('Error occured', error);
+        res.status(500).json({
+            status: 'Failed',
+            message: error.message,
+            data: null,
+        });
+    }
+};
+
 
 const handlerGetOutfitById = async (req, res) => {
     try {
@@ -19,9 +63,7 @@ const handlerGetOutfitById = async (req, res) => {
         res.status(200).json({
             status: "Success",
             message: "Berhasil ngambil data outfit",
-            data: {
-                Outfit: outfit,
-            }
+            data: outfit,
         });
     } catch(error){
         console.error('Error occured', error);
@@ -36,6 +78,20 @@ const handlerGetOutfitById = async (req, res) => {
 const handlerGetOutfitByOccupation = async (req, res) => {
     try {
         const { userId, occupationId } = req.body;
+
+        // Cek apakah ada di tabel occupation:
+        const occupation = await Occupation.findOne({
+            where: {id: occupationId}
+        });
+
+        if (!occupation) {
+            res.status(404).json({
+                status: "Failed",
+                message: "Occupation not found",
+                data: null,
+            });
+        }
+        
         // Cek data berdasarkan Outfit Id dan User Id
         const outfit = await Outfit.findOne({
             where: {userId: userId, occupationId: occupationId},
@@ -52,9 +108,7 @@ const handlerGetOutfitByOccupation = async (req, res) => {
         res.status(200).json({
             status: "Success",
             message: "Berhasil ngambil data outfit",
-            data: {
-                Outfit: outfit,
-            }
+            data: outfit,
         });
     } catch(error){
         console.error('Error occured', error);
@@ -66,6 +120,7 @@ const handlerGetOutfitByOccupation = async (req, res) => {
     }
 };
 
+/* POST METHOD */
 const handlerAddOutfit = async (req, res) => {
     try {
         const { userId, occupationId, namaOutfit, isFavorite} = req.body;
@@ -93,6 +148,53 @@ const handlerAddOutfit = async (req, res) => {
     }
 };
 
+const addItemToOutfit = async (req, res) => {
+    try {
+        const { id, userId, items} = req.body;
+        // Cek apakah userId ini ada atau gak di tabel Outfit:
+        const outfit = await Outfit.findOne({
+            where: {id, userId},
+        });
+
+        if (!outfit){
+            throw new Error("Outfit not found");
+        }
+
+        /* Tambahkan item ke dalam outfitItems */
+        const item = await Promise.all(
+            items.map( async (item) => {
+                const newItem = await OutfitItem.create({
+                    outfitId: outfit.id,
+                    /* item_name itu tergantung penamaanya dari request:
+                        {
+                        “Id_outfit” : 1
+                        “Outfit_name” : a
+                        “Favorite” : true
+                        “Items”
+                        {
+                            “Id_item”: ..
+                            “item_name”: ..
+                        }
+                        }
+                    */
+                    namaItem: item.item_name,
+                });
+                return newItem;
+            })
+        ); 
+        res.status(201).json({
+            message: "Items berhasil ditambahkan",
+            item,
+        });
+    } catch (error){
+        console.error('Error occured', error);
+        res.status(500).json({
+            status: "Failed",
+            message: error.message,
+            data: null,
+        });
+    }
+};
 const handlerChangeFavorite = async (req, res) => {
     try{
         const {id, userId} = req.body;
@@ -121,6 +223,7 @@ const handlerChangeFavorite = async (req, res) => {
     }
 };
 
+/* PUT METHOD */
 const handlerUpdateOutfit = async (req, res) => {
     try{
         const { userId, occupationId, namaOutfit, isFavorite } = req.body;
@@ -136,9 +239,7 @@ const handlerUpdateOutfit = async (req, res) => {
         res.status(200).json({
             status: "Success",
             message: "Update Outfit Success",
-            data: {
-                Outfit: outfit,
-            }
+            data: outfit,
         });
     } catch (error) {
         console.error('Error occured', error);
@@ -150,9 +251,10 @@ const handlerUpdateOutfit = async (req, res) => {
     }
 };
 
+/* DELETE METHOD */
 const handlerDeleteOutfit = async (req, res) => {
     try {
-        const {id} = req.body;
+        const {id} = req.params;
         const outfit = await Outfit.findByPk(id);
 
         if (!outfit){
@@ -176,14 +278,49 @@ const handlerDeleteOutfit = async (req, res) => {
     }
 };
 
+const handlerDeleteItem = async (req, res) => {
+    try{
+        const { id, idItem } = req.body;
+        const outfit = await Outfit.findByPk(id);
+        
+        if (!outfit){
+            throw new Error("Outfit not found");
+        }
+
+        // Cari item
+        const item = await OutfitItem.findOne({
+            where: {
+                id: idItem,
+                outfitId: id,
+            },
+        });
+
+        if (!item){
+            throw new Error("Item not found");
+        }
+
+        await item.destroy();
+        res.status(201).json({
+            status: "Success",
+            message: 'Berhasil delete item',
+        });
+    } catch(error){
+        console.error('Error occured', error);
+        res.status(500).json({
+            status: "Failded",
+            message: "Internal server error",
+        });
+    }
+};
+
 module.exports = {
+    handlerGetAllOutfits,
     handlerGetOutfitById,
     handlerGetOutfitByOccupation,
     handlerAddOutfit,
+    addItemToOutfit,
     handlerChangeFavorite,
     handlerUpdateOutfit,
-    handlerDeleteOutfit
+    handlerDeleteOutfit,
+    handlerDeleteItem
 }
-
-
-

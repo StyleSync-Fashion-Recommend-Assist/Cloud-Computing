@@ -11,7 +11,7 @@ function createOutfitItemDb (sequelize, DataTypes) {
           model: 'Outfit',
           key: 'id',
         },
-        allowNull: false,
+        allowNull: true,
       },
       namaItem: {
         type: DataTypes.STRING,
