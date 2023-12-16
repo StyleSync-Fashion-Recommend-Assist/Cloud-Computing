@@ -1,4 +1,5 @@
 const express = require('express');
+// User
 const { handlerRegisterUser,
     handlerLoginUser,
     handlerLogoutUser,
@@ -9,6 +10,16 @@ const { handlerRegisterUser,
     handlerGetDetailProfile,
     handlerUpdateProfile
 } = require('../handler/app/User/handler');
+// Outfit
+const { handlerGetAllOutfits,
+    handlerGetOutfitById,
+    handlerGetOutfitByOccupation,
+    handlerAddOutfit,
+    handlerAddItemToOutfit,
+    handlerChangeFavorite,
+    handlerUpdateOutfit,
+    handlerDeleteOutfit,
+    handlerDeleteItem } = require('../handler/app/Closet/outfit.controller');
 const authenticateToken = require('../middleware/authenticateToken');
 
 const router = express.Router();
@@ -32,4 +43,8 @@ router.get('/user/profile', authenticateToken, handlerGetDetailProfile);
 // Update Profile
 router.put('/user/update', authenticateToken, handlerUpdateProfile);
 
+/* OUTFIT */
+router.post('/outfit/addItemOutfit', handlerAddItemToOutfit);
+router.post('/outfit/changeFav', handlerChangeFavorite);
+router.post('/outfit/addOutfit', handlerAddOutfit);
 module.exports = router;

@@ -49,11 +49,11 @@ function createClosetDb (sequelize, DataTypes){
       },
       gender: {
         type: DataTypes.ENUM('Male', 'Female', 'Unisex'),
-        allowNull: false,
+        allowNull: true,
       },
       size: {
         type: DataTypes.ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL'),
-        allowNull: false,
+        allowNull: true,
       },
       isFavorite: {
         type: DataTypes.BOOLEAN,

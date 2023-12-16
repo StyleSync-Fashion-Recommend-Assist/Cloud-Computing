@@ -11,7 +11,7 @@ function createSubKategoriDb (sequelize, DataTypes) {
           model: 'Kategori',
           key: 'id',
         },
-        allowNull: false,
+        allowNull: true,
       },
       namaKategori: {
         type: DataTypes.STRING,

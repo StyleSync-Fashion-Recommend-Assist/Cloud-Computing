@@ -16,7 +16,7 @@ if (config.use_env_variable) {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
-console.log('1');
+// console.log('1');
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -38,11 +38,11 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-console.log('2');
+// console.log('2');
 
 setupAssoDb(sequelize);
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log('3');
+// console.log('3');
 module.exports = db;
