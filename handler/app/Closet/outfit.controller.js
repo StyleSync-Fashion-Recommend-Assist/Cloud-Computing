@@ -6,9 +6,7 @@ const handlerGetAllOutfits = async (req, res) => {
     try{ 
         const {userId} = req.params;
         // Cek apakah userId ini ada atau gak di tabel User:
-        const user = await User.findByPk(userId, {
-            attributes: ["name", "email", "gender"],
-        });
+        const user = await User.findByPk(userId);
 
         if (!user){
             res.status(404).json({
@@ -18,20 +16,16 @@ const handlerGetAllOutfits = async (req, res) => {
             });
         }
 
-        // Bila valid, ambil data outfit
-        const outfit = await Outfit.findOne({
-            where: {userId: userId}
+        // Bila valid, ambil semua data outfit
+        const outfit = await Outfit.findAll({
+            where: {userId}, 
+            attributes: ["namaOutfit"],
         });
 
         res.status(200).json({
             status: "Success",
             message: "Berhasil ngambil semua data outfit",
-            data: {
-                name: user.name,
-                email: user.email,
-                gender: user.gender,
-                outfit,
-            }
+            data: outfit,
         });
     } catch (error){
         console.error('Error occured', error);
@@ -92,19 +86,11 @@ const handlerGetOutfitByOccupation = async (req, res) => {
             });
         }
         
-        // Cek data berdasarkan Outfit Id dan User Id
-        const outfit = await Outfit.findOne({
+        // Ambil semua data outfit berdasarkan occupation
+        const outfit = await Outfit.findAll({
             where: {userId: userId, occupationId: occupationId},
-            include: [
-                {model: User, attributes: [
-                    'name', 'email', 'gender'
-                ]},
-                {model: Occupation, attributes: [
-                    'occupationName'
-                ]}
-            ],
         });
-
+        
         res.status(200).json({
             status: "Success",
             message: "Berhasil ngambil data outfit",
@@ -134,9 +120,7 @@ const handlerAddOutfit = async (req, res) => {
         res.status(201).json({
             status: "Success",
             message: "Berhasil nambah Outfit",
-            data: {
-                Outfit: outfit,
-            }
+            data: outfit,
         })
     } catch (error){
         console.error('Error occured', error);
@@ -148,12 +132,12 @@ const handlerAddOutfit = async (req, res) => {
     }
 };
 
-const addItemToOutfit = async (req, res) => {
+const handlerAddItemToOutfit = async (req, res) => {
     try {
-        const { id, userId, items} = req.body;
+        const { userId, items} = req.body;
         // Cek apakah userId ini ada atau gak di tabel Outfit:
         const outfit = await Outfit.findOne({
-            where: {id, userId},
+            where: {userId},
         });
 
         if (!outfit){
@@ -165,6 +149,7 @@ const addItemToOutfit = async (req, res) => {
             items.map( async (item) => {
                 const newItem = await OutfitItem.create({
                     outfitId: outfit.id,
+                    namaItem: item.item_name,
                     /* item_name itu tergantung penamaanya dari request:
                         {
                         “Id_outfit” : 1
@@ -177,7 +162,6 @@ const addItemToOutfit = async (req, res) => {
                         }
                         }
                     */
-                    namaItem: item.item_name,
                 });
                 return newItem;
             })
@@ -209,7 +193,7 @@ const handlerChangeFavorite = async (req, res) => {
         outfit.isFavorite = true;
         await outfit.save();
 
-        res.status(200).json({
+        res.status(201).json({
             status: "Success",
             message: "Change Favorite Success",
         });
@@ -232,10 +216,12 @@ const handlerUpdateOutfit = async (req, res) => {
         }); 
 
         await outfit.update({
+            occupationId,
             namaOutfit,
             isFavorite,
         });
-
+        await outfit.save();
+        
         res.status(200).json({
             status: "Success",
             message: "Update Outfit Success",
@@ -318,7 +304,7 @@ module.exports = {
     handlerGetOutfitById,
     handlerGetOutfitByOccupation,
     handlerAddOutfit,
-    addItemToOutfit,
+    handlerAddItemToOutfit,
     handlerChangeFavorite,
     handlerUpdateOutfit,
     handlerDeleteOutfit,
