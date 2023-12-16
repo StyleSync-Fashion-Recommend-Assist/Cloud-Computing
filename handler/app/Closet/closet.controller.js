@@ -134,7 +134,7 @@ const handlerGetUpdateItem = async (req, res) => {
 
 /* 
 ***
-PUT 
+DELETE
     -Delate Item  
 ***
 */
