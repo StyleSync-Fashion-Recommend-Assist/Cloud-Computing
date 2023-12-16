@@ -93,5 +93,81 @@ const handlerGetOutfitByName = async (req, res) => {
         });
     }
 };
-/* PUT */
+/* 
+***
+PUT 
+    -Update Item  
+***
+*/
+const handlerGetUpdateItem = async (req, res) => {
+    try {
+        const { Id_user, Ref_item_data } = req.query;
 
+        const closet = await Closet.findOne({
+            where: {
+                userId: Id_user,
+                refItemData: Ref_item_data
+            },
+        });
+
+        if (!closet) {
+            throw new Error('Closet item not found');
+        }
+
+        res.status(200).json({
+            status: "Success",
+            message: "Berhasil mendapatkan data item berdasarkan Id_user dan Ref item data",
+            data: {
+                closet
+            }
+        });
+    } catch (error) {
+        console.error('Error occured', error);
+        res.status(500).json({
+            status: "Failed",
+            message: error.message,
+            data: null,
+        });
+    }
+};
+
+
+/* 
+***
+PUT 
+    -Delate Item  
+***
+*/
+const handlerDeleteItem = async (req, res) => {
+    try {
+        const { Id_item } = req.query;
+
+        const closet = await Closet.findOne({
+            where: {
+                id: Id_item
+            },
+        });
+
+        if (!closet) {
+            throw new Error('Closet item not found');
+        }
+
+        await closet.destroy();
+
+        res.status(200).json({
+            status: "Success",
+            message: "Berhasil menghapus item berdasarkan Id_item",
+        });
+    } catch (error) {
+        console.error('Error occurred', error);
+        res.status(500).json({
+            status: "Failed",
+            message: error.message,
+            data: null,
+        });
+    }
+};
+
+module.exports = {
+    handlerDeleteItem,
+};
