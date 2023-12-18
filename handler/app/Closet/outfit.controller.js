@@ -4,15 +4,22 @@ const { Outfit, User, Occupation, OutfitItem } = require('../../../models');
 /* GET METHODS */
 const handlerGetAllOutfits = async (req, res) => {
     try{ 
-        const {userId} = req.params;
-        // Cek apakah userId ini ada atau gak di tabel User:
-        const user = await User.findByPk(userId);
+        const uuid = req.user.uuid;
+        const {userId} = req.body;
+        // Cek User
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
 
-        if (!user){
-            res.status(404).json({
+        console.log(user.token);
+
+        // Kalau User logout 
+        if (!user.token){
+            res.status(403).json({
                 status: "Failed",
-                message: "User not found",
-                data: null,
+                message: "User ini udah Log Out",
             });
         }
 
@@ -40,7 +47,25 @@ const handlerGetAllOutfits = async (req, res) => {
 
 const handlerGetOutfitById = async (req, res) => {
     try {
+        const uuid = req.user.uuid;
         const { userId, outfitId } = req.body;
+
+        // Cek User
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau User logout 
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         // Cek data berdasarkan Outfit Id dan User Id
         const outfit = await Outfit.findOne({
             where: {id: outfitId, userId: userId},
@@ -71,7 +96,25 @@ const handlerGetOutfitById = async (req, res) => {
 
 const handlerGetOutfitByOccupation = async (req, res) => {
     try {
+        const uuid = req.user.uuid;
         const { userId, occupationId } = req.body;
+
+        // Cek User
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau User logout 
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
 
         // Cek apakah ada di tabel occupation:
         const occupation = await Occupation.findOne({
@@ -109,7 +152,24 @@ const handlerGetOutfitByOccupation = async (req, res) => {
 /* POST METHOD */
 const handlerAddOutfit = async (req, res) => {
     try {
+        const uuid = req.user.uuid;
         const { userId, occupationId, namaOutfit, isFavorite} = req.body;
+        // console.log(req.user);
+        // console.log(uuid);
+        
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+        console.log(user.token);
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
+
         const outfit = await Outfit.create({
             userId,
             occupationId,
@@ -134,7 +194,25 @@ const handlerAddOutfit = async (req, res) => {
 
 const handlerAddItemToOutfit = async (req, res) => {
     try {
+        const uuid = req.user.uuid;
         const { userId, items} = req.body;
+
+        // Cek User Token
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau User udah logout gabisa tambah Item
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         // Cek apakah userId ini ada atau gak di tabel Outfit:
         const outfit = await Outfit.findOne({
             where: {userId},
@@ -149,6 +227,7 @@ const handlerAddItemToOutfit = async (req, res) => {
             items.map( async (item) => {
                 const newItem = await OutfitItem.create({
                     outfitId: outfit.id,
+                    itemId: item.itemId,
                     namaItem: item.item_name,
                     /* item_name itu tergantung penamaanya dari request:
                         {
@@ -181,7 +260,26 @@ const handlerAddItemToOutfit = async (req, res) => {
 };
 const handlerChangeFavorite = async (req, res) => {
     try{
+        const uuid = req.user.uuid;
         const {id, userId} = req.body;
+
+        // Cek User 
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau Tokennya habis, gabisa mengubah
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
+
         const outfit = await Outfit.findOne({
             where: {id, userId},
         })
@@ -210,7 +308,24 @@ const handlerChangeFavorite = async (req, res) => {
 /* PUT METHOD */
 const handlerUpdateOutfit = async (req, res) => {
     try{
+        const uuid = req.user.uuid;
         const { userId, occupationId, namaOutfit, isFavorite } = req.body;
+        // Cek User 
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau Tokennya habis, gabisa mengubah
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         const outfit = await Outfit.findOne({
             where: {userId},
         }); 
@@ -240,7 +355,24 @@ const handlerUpdateOutfit = async (req, res) => {
 /* DELETE METHOD */
 const handlerDeleteOutfit = async (req, res) => {
     try {
+        const uuid = req.user.uuid;
         const {id} = req.params;
+        // Cek User 
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau Tokennya habis, gabisa mengubah
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         const outfit = await Outfit.findByPk(id);
 
         if (!outfit){
@@ -252,7 +384,6 @@ const handlerDeleteOutfit = async (req, res) => {
         res.status(200).json({
             status: "Success",
             message: "Berhasil menghapus outfit dari database",
-            data: null,
         });
     } catch (error){
         console.error('Error occured', error);
@@ -266,8 +397,25 @@ const handlerDeleteOutfit = async (req, res) => {
 
 const handlerDeleteItem = async (req, res) => {
     try{
+        const uuid = req.user.uuid;
         const { id, idItem } = req.body;
         const outfit = await Outfit.findByPk(id);
+        // Cek User 
+        const user = await User.findOne({
+            where: {
+                uuid: uuid
+            }
+        }); 
+
+        console.log(user.token);
+
+        // Kalau Tokennya habis, gabisa mengubah
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         
         if (!outfit){
             throw new Error("Outfit not found");

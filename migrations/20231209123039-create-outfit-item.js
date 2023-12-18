@@ -16,6 +16,26 @@ module.exports = {
         },
         allowNull: false,
       },
+      kategoriId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Kategori',
+          key: 'id',
+        },
+        allowNull: true,
+      },
+      subKategoriId:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'SubKategori',
+          key: 'id',
+        },
+        allowNull: true,
+      },
+      itemId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       namaItem: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -135,6 +135,15 @@ function createAssociation(sequelize) {
     targetKey: "id"
   });
 
+  OutfitItem.belongsTo(Kategori, {
+    foreignKey: "kategoriId",
+    targetKey: "id"
+  }); 
+
+  OutfitItem.belongsTo(SubKategori, {
+    foreignKey: "subKategoriId",
+    targetKey: "id"
+  }); 
 }
 
 module.exports = createAssociation;
