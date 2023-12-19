@@ -159,7 +159,7 @@ const handlerGenerateNewResetPassword = async (req, res, next) => {
 const handlerGetDetailProfile = async (req, res, next) => {
   try {
     const uuid = req.user.uuid;
-    const user = await userService.getDetailProfile(uuid);
+    const user = await userService.getDetailProfile(uuid, res);
     res.status(200).json({
       status: "Success",
       data: user,

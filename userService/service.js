@@ -194,13 +194,13 @@ const service = {
     },
 
     
-    getDetailProfile: async (uuid) => {
+    getDetailProfile: async (uuid, res) => {
         const user = await User.findOne({
             where: {
                 uuid: uuid,
             }
         });
-        
+
         console.log(user.token);
 
         // Kalau User logout 
