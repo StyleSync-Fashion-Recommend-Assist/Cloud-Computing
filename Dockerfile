@@ -14,3 +14,4 @@ RUN npm install
 # Command
 CMD ["npm", "start"]
 
+EXPOSE 8080

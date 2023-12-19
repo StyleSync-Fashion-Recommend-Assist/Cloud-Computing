@@ -200,6 +200,16 @@ const service = {
                 uuid: uuid,
             }
         });
+        
+        console.log(user.token);
+
+        // Kalau User logout 
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
         if (!user){
             throw new Error('User not found');
         }
