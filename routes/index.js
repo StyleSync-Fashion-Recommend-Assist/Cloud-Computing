@@ -35,7 +35,7 @@ const {
     handlergetItemBySubCategory,
     handlerGetSubByCategory,
     handlerGetOutfitByName,
-    handlerUpdateData } = require('../app/Closet/closet.controller');
+    handlerUpdateData } = require('../handler/app/Closet/closet.controller');
 const authenticateToken = require('../middleware/authenticateToken');
 
 const router = express.Router();
