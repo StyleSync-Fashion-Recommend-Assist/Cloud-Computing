@@ -1,0 +1,69 @@
+// marketplaceController.js
+
+const changeFavoriteMarketplaceFinds = async (req, res, next) => {
+    try {
+      const { id_marketplace_find } = req.body;
+      // Logika untuk mengubah status favorit marketplace find di database
+      // const updatedMarketplaceFind = changeFavoriteStatusInDatabase(id_marketplace_find);
+      // res.status(200).json(updatedMarketplaceFind);
+      res.status(200).json({
+        status: 'Success',
+        message: `Changed favorite status for marketplace find with ID ${id_marketplace_find}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  const getMarketplaceFindById = async (req, res, next) => {
+    try {
+      const { id_marketplace_find } = req.params;
+      // Logika untuk mendapatkan marketplace find berdasarkan ID dari database
+      // const marketplaceFind = getMarketplaceFindByIdFromDatabase(id_marketplace_find);
+      // res.status(200).json(marketplaceFind);
+      res.status(200).json({
+        status: 'Success',
+        message: `Retrieved marketplace find with ID ${id_marketplace_find}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  const getMarketplaceFindsByImgUrl = async (req, res, next) => {
+    try {
+      const { img_url } = req.query;
+      // Logika untuk mendapatkan seluruh rekomendasi marketplace finds berdasarkan Img URL dari database
+      // const marketplaceFinds = getMarketplaceFindsByImgUrlFromDatabase(img_url);
+      // res.status(200).json(marketplaceFinds);
+      res.status(200).json({
+        status: 'Success',
+        message: `Retrieved all recommended marketplace finds based on Img URL: ${img_url}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  const getMarketplaceFindsHistory = async (req, res, next) => {
+    try {
+      const { id_user } = req.query;
+      // Logika untuk mendapatkan riwayat marketplace finds berdasarkan ID user dari database
+      // const marketplaceFindsHistory = getMarketplaceFindsHistoryFromDatabase(id_user);
+      // res.status(200).json(marketplaceFindsHistory);
+      res.status(200).json({
+        status: 'Success',
+        message: `Retrieved marketplace finds history for user with ID: ${id_user}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  module.exports = {
+    changeFavoriteMarketplaceFinds,
+    getMarketplaceFindById,
+    getMarketplaceFindsByImgUrl,
+    getMarketplaceFindsHistory,
+  };
+  
