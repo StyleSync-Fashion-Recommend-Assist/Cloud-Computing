@@ -89,5 +89,10 @@ router.put('/outfit/update', authenticateToken, handlerUpdateOutfit);
 router.delete('/outfit/delete', authenticateToken, handlerDeleteOutfit);
 router.delete('/outfit/deleteItem', authenticateToken, handlerDeleteItem);
 
+// ! MARKETPLACE FINDS ! /
+router.post('/change_favorite_marketplace_finds', marketplaceController.changeFavoriteMarketplaceFinds);
+router.get('/get_marketplace_find_by_id/:id_marketplace_find', marketplaceController.getMarketplaceFindById);
+router.get('/get_marketplace_finds', marketplaceController.getMarketplaceFindsByImgUrl);
+router.get('/get_marketplace_finds_history', marketplaceController.getMarketplaceFindsHistory);
 
 module.exports = router;
