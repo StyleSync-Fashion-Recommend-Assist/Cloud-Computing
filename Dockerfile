@@ -5,7 +5,7 @@ FROM node:latest
 WORKDIR /src/app
 
 # Copy the current directory contents into the container at /app
-COPY package*.json .
+COPY package*.json ./
 COPY . ./
 
 # Install Dependencies
