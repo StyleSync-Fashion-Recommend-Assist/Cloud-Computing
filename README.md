@@ -4,6 +4,7 @@ Api yang digunakan merupakan endpoint dari Cloud Run: https://stylesync-run-t4yh
 ## Routes: 
 * User
     * Register User:
+        
         Path: 
 
         ```
