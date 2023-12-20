@@ -72,13 +72,23 @@ const service = {
         return user;
     },
 
-    changePassword: async (uuid, oldPassword, newPassword) => {
+    changePassword: async (uuid, oldPassword, newPassword, res) => {
         // Cari user berdasarkan id
         const user = await User.findOne({
             where: {
                 uuid: uuid,
             }
         })
+        console.log(user.token);
+
+        // Kalau User logout 
+        if (!user.token){
+            res.status(403).json({
+                status: "Failed",
+                message: "User ini udah Log Out",
+            });
+        }
+        
         if (!user){
             throw new Error('User not found');
         }
@@ -172,7 +182,6 @@ const service = {
     },
 
     deleteOTP : async (otp, uuid) => {
-
         const user = await User.findOne({
           where: {
             uuid
