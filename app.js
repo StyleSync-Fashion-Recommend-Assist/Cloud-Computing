@@ -14,8 +14,6 @@ const handler500 = require('./middleware/500Handler');
 
 const v1 = require("./routes/index"); 
 
-
-
 const app = express();
 
 // Configure Middleware
