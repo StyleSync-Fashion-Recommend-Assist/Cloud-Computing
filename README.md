@@ -4,38 +4,37 @@ Api yang digunakan merupakan endpoint dari Cloud Run: https://stylesync-run-t4yh
 ## Routes: 
 * User
     * Register User:
+        Path: 
 
-    Path: 
+        ```
+        /api/register
+        ```
 
-    ```
-    /api/register
-    ```
+        Method: **POST**
+        
+        Body: 
 
-    Method: **POST**
-    
-    Body: 
-
-    ```json
-    {
-    "name": "Testing",
-    "email": "test@gmail.com",
-    "password": "test 123"
-    }
-    ```
-
-    Response: 
-    * Failed:
         ```json
         {
-        "status": "Error Accured",
-        "message": "User Already Exists"
+        "name": "Testing",
+        "email": "test@gmail.com",
+        "password": "test 123"
         }
         ```
 
-    * Success: 
-    ```json
-    {
-    "status": "Success",
-    "message": "User berhasil Register"
-    }
-    ```
+        Response: 
+        * Failed:
+            ```json
+            {
+            "status": "Error Accured",
+            "message": "User Already Exists"
+            }
+            ```
+
+        * Success: 
+        ```json
+        {
+        "status": "Success",
+        "message": "User berhasil Register"
+        }
+        ```
