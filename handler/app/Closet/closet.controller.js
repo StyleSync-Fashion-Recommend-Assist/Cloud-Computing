@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 // * POST METHOD */
 const handlerAddItem = async (req, res) => {
     try{
+        // * Cari User dengan UUID
         const uuid = req.user.uuid;
         const { userId, kategoriId, subKategoriId, warnaId, items } = req.body;
         const user = await User.findOne_({
@@ -50,6 +51,7 @@ const handlerAddItem = async (req, res) => {
                 warnaId: closet.warnaId,
                 itemId: item.itemId,
                 namaItem: item.namaItem,
+                photoImage: item.photoImage,
             }
         });
     } catch (error){

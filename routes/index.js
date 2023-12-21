@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('../middleware/multer');
 
 // ! User
 const { handlerRegisterUser,
@@ -60,7 +61,7 @@ router.get('/user/profile', authenticateToken, handlerGetDetailProfile);
 router.put('/user/update', authenticateToken, handlerUpdateProfile);
 
 // ! CLOSET ! //
-router.post('/closet/addItem', authenticateToken, handlerAddItem);
+router.post('/closet/addItem', authenticateToken, multer.single('image') ,handlerAddItem);
 router.post('/closet/changeFav', authenticateToken, handlerChangeFav);
 
 router.get('/closet/allKategori', authenticateToken, handlerGetAllKategori);

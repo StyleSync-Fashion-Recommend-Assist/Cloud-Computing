@@ -13,7 +13,6 @@ function createOutfitItemDb (sequelize, DataTypes) {
         },
         allowNull: true,
       },
-      // TODO: TAMBAHKAN KATEGORI ID DAN SUBKATEGORI DI MIGRATIONS
       kategoriId: {
         type: DataTypes.INTEGER,
         references: {
@@ -38,6 +37,8 @@ function createOutfitItemDb (sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      occupation: DataTypes.STRING,
+      photoImage: DataTypes.STRING,
     },
     {
       tableName: "OutfitItem",

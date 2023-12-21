@@ -40,6 +40,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      occupation: Sequelize.STRING,
+      photoImage: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
